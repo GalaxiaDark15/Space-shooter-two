@@ -1,0 +1,76 @@
+import { useEffect, useState } from "react";
+import deleteHighScore from "../api/deleteHighScore";
+import getHighScores from "../api/getHighScores";
+import axios from "axios";
+import { API_URL } from "../constants"
+
+/**
+ * React hook that fetchs the data from server
+ * @returns
+ */
+export default function useAllHighScores() {
+  const [allScores, setAllScores] = useState([]);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // only run once
+  useEffect(() => {
+    console.log("test");
+    /**
+     * Fetch all score data
+     */
+    async function fetchData() {
+      try {
+        const data = await getHighScores();
+        console.log("success");
+        console.log(data.data.payload);
+        setAllScores(data.data.payload);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    // call method
+    fetchData();
+  }, []);
+
+  const formHandler = (event) => {
+    const{value, name} = event.target
+
+    setAllScores({
+      ...allScores,
+      [name]: value,
+    })
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const URL = API_URL + "/update-score"
+    axios.put(URL, allScores).then((response) => {
+      console.log(response)
+    }).catch((err) => {console.log(err)})
+  
+    }
+  
+
+  // makes api req to delete
+  const deleteScore = async (id) => {
+    try {
+      setIsDeleting(true);
+      await deleteHighScore(id);
+      setAllScores(allScores.filter((score) => score._id !== id));
+      console.log("success, we delete the score");
+      setIsDeleting(false);
+    } catch (e) {
+      console.log(e);
+      setIsDeleting(false);
+    }
+  };
+
+  return {
+    allScores,
+    deleteScore,
+    isDeleting,
+    handleSubmit,
+    formHandler,
+  };
+}

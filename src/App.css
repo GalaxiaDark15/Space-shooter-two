@@ -1,0 +1,49 @@
+body,
+html {
+  width: 100vw;
+  overflow: hidden;
+}
+Countdown {
+  color: "white";
+}
+#animatedBackground {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("./assets/background.png");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: auto 100%;
+  /*adjust s value for speed*/
+  animation: animatedBackground 500s linear infinite;
+}
+
+@keyframes animatedBackground {
+  from {
+    background-position: 0 0;
+  }
+  /*use negative width if you want it to flow right to left else and positive for left to right*/
+  to {
+    background-position: 0 -10000px;
+  }
+}
+
+
+.missileImage {
+  animation: missileAnim 2s linear ;
+  
+  width: 100px;
+
+
+}
+
+@keyframes missileAnim {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-1000px);
+  }
+}

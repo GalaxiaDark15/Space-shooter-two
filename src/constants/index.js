@@ -1,2 +1,2 @@
 // this is the url for our server
-export const API_URL = 'http://localhost:8080';
+export const API_URL = 'https://space-back-end.onrender.com';
